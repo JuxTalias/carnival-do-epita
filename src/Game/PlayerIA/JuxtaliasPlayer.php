@@ -44,30 +44,26 @@ class JuxtaliasPlayer extends Player
         if ($this->result->getNbRound() == 0) {
             return $this->scissorsChoice();
         }
-
-        $o_choice_list = $this->result->getChoicesFor($this->opponentSide);
-        $m_choice_list = $this->result->getChoicesFor($this->mySide);
-
-        $paper_count = 0;
-        $rock_count = 0;
-        $scissors_count = 0;
-
-        foreach ($o_choice_list as $o) {
-            if ($o == $this->paperChoice())
-                ++$paper_count;
-            else if ($o == $this->rockChoice())
-                ++$rock_count;
-            else if ($o == $this->scissorsChoice())
-                ++$scissors_count;
-        }
-        echo $paper_count . ' ' . $rock_count . ' ' . $scissors_count . ' ' . PHP_EOL;
-
-        if ($paper_count == 0 && $rock_count == 0)
+        
+        if ($this->result->getStatsFor($this->opponentSide)['paper'] == 0 && $this->result->getStatsFor($this->opponentSide)['rock'] == 0)
             return $this->rockChoice();
-        else if ($rock_count == 0 && $scissors_count == 0)
+        else if ($this->result->getStatsFor($this->opponentSide)['rock'] == 0 && $this->result->getStatsFor($this->opponentSide)['scissors'] == 0)
             return $this->scissorsChoice();
-        else if ($paper_count == 0 && $scissors_count == 0)
+        else if ($this->result->getStatsFor($this->opponentSide)['paper'] == 0 && $this->result->getStatsFor($this->opponentSide)['scissors'] == 0)
             return $this->paperChoice();
+
+        if ($this->result->getStatsFor($this->opponentSide)['paper'] > $this->result->getStatsFor($this->opponentSide)['rock']) {
+            if ($this->result->getStatsFor($this->opponentSide)['paper'] > $this->result->getStatsFor($this->opponentSide)['scissors'])
+                return $this->scissorsChoice();
+            else
+                return $this->rockChoice();
+        }
+        else if ($this->result->getStatsFor($this->opponentSide)['rock'] > $this->result->getStatsFor($this->opponentSide)['scissors']) {
+            return $this->paperChoice();
+        }
+        else {
+            return $this->rockChoice();
+        }
 
         return parent::getChoice();
     }
