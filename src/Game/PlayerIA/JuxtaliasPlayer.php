@@ -64,13 +64,6 @@ class JuxtaliasPlayer extends Player
                 return $this->rockChoice();
         }
 
-        // Check if last choice loose to counter the opponent
-        if ($this->result->getLastScoreFor($this->mySide) == 0) {
-            if (rand(0, 1) == 1) {
-                return $this->result->getLastChoiceFor($this->opponentSide);
-            }
-        }
-
         // Check the highest choice probability
         if ($this->result->getStatsFor($this->opponentSide)['paper'] > $this->result->getStatsFor($this->opponentSide)['rock']) {
             if ($this->result->getStatsFor($this->opponentSide)['paper'] > $this->result->getStatsFor($this->opponentSide)['scissors'])
