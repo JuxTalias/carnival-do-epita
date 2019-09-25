@@ -41,6 +41,7 @@ class JuxtaliasPlayer extends Player
         // How can i display the result of each round ? $this->prettyDisplay()
         // -------------------------------------    -----------------------------------------------------
 
+        // Play scissors at first round
         if ($this->result->getNbRound() == 0) {
             return $this->scissorsChoice();
         }
@@ -53,6 +54,7 @@ class JuxtaliasPlayer extends Player
         else if ($this->result->getStatsFor($this->opponentSide)['paper'] == 0 && $this->result->getStatsFor($this->opponentSide)['scissors'] == 0)
             return $this->paperChoice();
 
+        // Handles equality
         if ($this->result->getLastChoiceFor($this->mySide) == $this->result->getLastChoiceFor($this->opponentSide)) {
             if ($this->result->getLastChoiceFor($this->mySide) == $this->paperChoice())
                 return $this->scissorsChoice();
