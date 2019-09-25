@@ -44,7 +44,8 @@ class JuxtaliasPlayer extends Player
         if ($this->result->getNbRound() == 0) {
             return $this->scissorsChoice();
         }
-        
+
+        // Check if player is dumb
         if ($this->result->getStatsFor($this->opponentSide)['paper'] == 0 && $this->result->getStatsFor($this->opponentSide)['rock'] == 0)
             return $this->rockChoice();
         else if ($this->result->getStatsFor($this->opponentSide)['rock'] == 0 && $this->result->getStatsFor($this->opponentSide)['scissors'] == 0)
@@ -52,6 +53,16 @@ class JuxtaliasPlayer extends Player
         else if ($this->result->getStatsFor($this->opponentSide)['paper'] == 0 && $this->result->getStatsFor($this->opponentSide)['scissors'] == 0)
             return $this->paperChoice();
 
+        if ($this->result->getLastChoiceFor($this->mySide) == $this->result->getLastChoiceFor($this->opponentSide)) {
+            if ($this->result->getLastChoiceFor($this->mySide) == $this->paperChoice())
+                return $this->scissorsChoice();
+            else if ($this->result->getLastChoiceFor($this->mySide) == $this->rockChoice())
+                return $this->paperChoice();
+            else if ($this->result->getLastChoiceFor($this->mySide) == $this->scissorsChoice())
+                return $this->rockChoice();
+        }
+
+        // Check the highest probability
         if ($this->result->getStatsFor($this->opponentSide)['paper'] > $this->result->getStatsFor($this->opponentSide)['rock']) {
             if ($this->result->getStatsFor($this->opponentSide)['paper'] > $this->result->getStatsFor($this->opponentSide)['scissors'])
                 return $this->scissorsChoice();
