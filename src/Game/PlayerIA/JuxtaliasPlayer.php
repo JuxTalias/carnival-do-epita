@@ -54,7 +54,7 @@ class JuxtaliasPlayer extends Player
         else if ($this->result->getStatsFor($this->opponentSide)['paper'] == 0 && $this->result->getStatsFor($this->opponentSide)['scissors'] == 0)
             return $this->paperChoice();
 
-        // Handles equality
+        // Handles equality to avoid loops
         if ($this->result->getLastChoiceFor($this->mySide) == $this->result->getLastChoiceFor($this->opponentSide)) {
             if ($this->result->getLastChoiceFor($this->mySide) == $this->paperChoice())
                 return $this->scissorsChoice();
@@ -64,7 +64,14 @@ class JuxtaliasPlayer extends Player
                 return $this->rockChoice();
         }
 
-        // Check the highest probability
+        // Check if last choice loose to counter the opponent
+        if ($this->result->getLastScoreFor($this->mySide) == 0) {
+            if (rand(0, 1) == 1) {
+                return $this->result->getLastChoiceFor($this->opponentSide);
+            }
+        }
+
+        // Check the highest choice probability
         if ($this->result->getStatsFor($this->opponentSide)['paper'] > $this->result->getStatsFor($this->opponentSide)['rock']) {
             if ($this->result->getStatsFor($this->opponentSide)['paper'] > $this->result->getStatsFor($this->opponentSide)['scissors'])
                 return $this->scissorsChoice();
